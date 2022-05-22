@@ -18,7 +18,7 @@
 		<maven.compiler.target>11</maven.compiler.target>
 		<lombok.version>1.18.22</lombok.version>
 		<!-- Properties are prefixed with flyway. -->
-		<flyway.version>8.1.0</flyway.version>
+		<flyway.version>8.5.10</flyway.version>
 		<!-- List are defined as comma-separated values -->
 		<flyway.schemas>public</flyway.schemas>
 	</properties>
