@@ -19,6 +19,3 @@ spring:
     baseline-on-migrate: true
     user: sa
     password:
-  data:
-    rest:
-      base-path: /api
