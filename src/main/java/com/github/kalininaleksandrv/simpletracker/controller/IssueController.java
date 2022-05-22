@@ -22,27 +22,15 @@ public class IssueController {
     @GetMapping(path = "issues")
     public ResponseEntity<Page<Issue>> getAllIssues(@PathVariable() int page,
                                                     @RequestParam(required = false, defaultValue = "100") int size) {
-        try {
-            if (page < 0) throw new IllegalArgumentException("page must be >= 0");
-            log.debug("starting request in /api/v1/issues");
-            Page<Issue> user = issueService.getAllIssues(page, size);
-            return new ResponseEntity<>(user, HttpStatus.OK);
-        } catch (IssueProcessingException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, String.valueOf(e));
-        }
+        if (page < 0) throw new IllegalArgumentException("page must be >= 0");
+        log.debug("starting request in /api/v1/issues");
+        Page<Issue> user = issueService.getAllIssues(page, size);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @PostMapping(path = "issue")
     public ResponseEntity<Issue> newIssue(@RequestBody Issue issue) {
-        try {
-            var savedIssue = issueService.save(issue);
-            return new ResponseEntity<>(savedIssue, HttpStatus.OK);
-        } catch (IssueProcessingException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, String.valueOf(e));
-        }
+        var savedIssue = issueService.save(issue);
+        return new ResponseEntity<>(savedIssue, HttpStatus.OK);
     }
 }

@@ -44,7 +44,6 @@ public class IssueServiceImpl implements IssueService {
                 throw new IssueProcessingException("bug must be prioritized before creation");
             }
         }
-
         issue.setIssueId(UUID.randomUUID().toString());
         issue.setDateTime(LocalDateTime.now());
         return issue;
