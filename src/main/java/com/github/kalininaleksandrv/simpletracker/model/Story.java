@@ -6,6 +6,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
 @Entity
 @Getter
@@ -15,6 +17,7 @@ import javax.persistence.Entity;
 public class Story extends Issue{
 
     private int points;
+    @Enumerated(EnumType.STRING)
     private StoryStatus storyStatus;
 
     @Override

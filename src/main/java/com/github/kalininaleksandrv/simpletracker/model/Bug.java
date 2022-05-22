@@ -6,6 +6,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
 @Entity
 @Getter
@@ -13,8 +15,10 @@ import javax.persistence.Entity;
 @ToString
 @RequiredArgsConstructor
 public class Bug extends Issue{
-
+    @Enumerated(EnumType.STRING)
     private BugStatus bugStatus;
+
+    @Enumerated(EnumType.STRING)
     private BugPriority priority;
 
     @Override
