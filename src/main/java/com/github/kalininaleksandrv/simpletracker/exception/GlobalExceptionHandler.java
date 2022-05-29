@@ -21,10 +21,10 @@ public class GlobalExceptionHandler {
         LOG.error("Request could not be processed: ", exception);
         AbstractMap.SimpleEntry<String, String> response;
 
-        if (exception instanceof IssueProcessingException){
+        if (exception instanceof IssueProcessingException || exception instanceof DeveloperException) {
             response = new AbstractMap.SimpleEntry<>("message", exception.getMessage());
         } else {
-            response  = new AbstractMap.SimpleEntry<>("message", "Request could not be processed");
+            response = new AbstractMap.SimpleEntry<>("message", "Request could not be processed");
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
