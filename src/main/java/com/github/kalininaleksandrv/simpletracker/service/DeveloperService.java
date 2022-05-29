@@ -12,4 +12,8 @@ public interface DeveloperService {
     Optional<Developer> getDeveloperById(long id);
 
     Developer save(Developer developer);
+
+    Optional<Developer> update(Developer developer);
+
+    void delete (Long id);
 }

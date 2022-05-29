@@ -5,13 +5,13 @@ import lombok.Data;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "developers")
+@Table(name = "developer")
 @Data
 public class Developer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
     @Column(name = "name")
-    String name;
+    private String name;
 }

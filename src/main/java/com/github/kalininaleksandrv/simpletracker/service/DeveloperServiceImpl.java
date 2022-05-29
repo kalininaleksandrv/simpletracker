@@ -22,7 +22,7 @@ public class DeveloperServiceImpl implements DeveloperService {
 
     @Override
     public Optional<Developer> getDeveloperById(long id) {
-        return Optional.empty();
+        return developerRepository.findById(id);
     }
 
     @Override
@@ -31,5 +31,26 @@ public class DeveloperServiceImpl implements DeveloperService {
             throw new DeveloperException("for new developers id must be null");
         }
         return developerRepository.save(developer);
+    }
+
+    @Override
+    public Optional<Developer> update(Developer developer) {
+        if(developer.getId() == null){
+            throw new DeveloperException("for update, developer must contain id");
+        }
+        Optional<Developer> developerFromDb = developerRepository.findById(developer.getId());
+        if(developerFromDb.isPresent()){
+            Developer local = developerFromDb.get();
+            local.setName(developer.getName());
+            return Optional.of(developerRepository.save(local));
+        }
+        return developerFromDb;
+    }
+
+    @Override
+    public void delete(Long id) {
+        Optional<Developer> developerFromDb = developerRepository.findById(id);
+        developerRepository.delete(developerFromDb
+                .orElseThrow(() -> new DeveloperException("unable to delete developer - not found in db")));
     }
 }
