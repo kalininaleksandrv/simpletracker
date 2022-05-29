@@ -19,7 +19,7 @@ public class Bug extends Issue{
     private BugStatus bugStatus;
 
     @Enumerated(EnumType.STRING)
-    private BugPriority priority;
+    private BugPriority bugPriority;
 
     @Override
     public boolean equals(Object o) {
@@ -30,14 +30,14 @@ public class Bug extends Issue{
         Bug bug = (Bug) o;
 
         if (bugStatus != bug.bugStatus) return false;
-        return priority == bug.priority;
+        return bugPriority == bug.bugPriority;
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
         result = 31 * result + (bugStatus != null ? bugStatus.hashCode() : 0);
-        result = 31 * result + (priority != null ? priority.hashCode() : 0);
+        result = 31 * result + (bugPriority != null ? bugPriority.hashCode() : 0);
         return result;
     }
 }

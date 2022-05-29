@@ -1,51 +1,80 @@
 package com.github.kalininaleksandrv.simpletracker.service;
 
+import com.github.kalininaleksandrv.simpletracker.exception.DeveloperException;
 import com.github.kalininaleksandrv.simpletracker.exception.IssueProcessingException;
 import com.github.kalininaleksandrv.simpletracker.model.Bug;
 import com.github.kalininaleksandrv.simpletracker.model.Issue;
 import com.github.kalininaleksandrv.simpletracker.model.IssueType;
 import com.github.kalininaleksandrv.simpletracker.model.Story;
+import com.github.kalininaleksandrv.simpletracker.repository.IssueBaseRepository;
+import com.github.kalininaleksandrv.simpletracker.utils.IssueValidator;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
+@RequiredArgsConstructor
 @Service
 public class IssueServiceImpl implements IssueService {
+
+    private final IssueBaseRepository issueBaseRepository;
+
     @Override
     public Page<Issue> getAllIssues(int page, int size) {
-        return null;
+        return issueBaseRepository.findAll(PageRequest.of(page, size));
     }
 
     @Override
     public Optional<Issue> getIssueByUid(UUID uuid) {
-        return Optional.empty();
+        return issueBaseRepository.findByIssueId(uuid.toString());
     }
 
     @Override
     public Issue save(Issue issue) {
-        if(issue.getIssueId() != null){
+        if (issue.getIssueId() != null) {
             throw new IssueProcessingException("new issues must not contains issueId");
         }
-        if(issue.getIssueType() == IssueType.STORY && issue.getDeveloper()!=null){
-            throw new IssueProcessingException("story must not be assigned due creation");
-        }
-        if(issue.getIssueType().equals(IssueType.STORY)){
-            Story story = (Story) issue;
-            if(story.getPoints()<=0){
-               throw new IssueProcessingException("story must be estimate before creation");
-            }
-        }
-        if(issue.getIssueType().equals(IssueType.BUG)){
-            Bug bug = (Bug) issue;
-            if(bug.getPriority()==null){
-                throw new IssueProcessingException("bug must be prioritized before creation");
-            }
-        }
+        IssueValidator.validate(issue);
         issue.setIssueId(UUID.randomUUID().toString());
         issue.setDateTime(LocalDateTime.now());
-        return issue;
+        return issueBaseRepository.save(issue);
+    }
+
+    @Override
+    public Issue update(Issue issue) {
+        if (issue.getIssueId() == null || issue.getIssueType() == null) {
+            throw new IssueProcessingException("for update, issue must contain id and TYPE");
+        }
+        Optional<Issue> byIssueId = issueBaseRepository.findByIssueId(issue.getIssueId());
+
+        if (byIssueId.isPresent()) {
+            byIssueId.get().setTitle(issue.getTitle());
+            byIssueId.get().setDescription(issue.getDescription());
+            byIssueId.get().setDeveloper(issue.getDeveloper());
+
+            if (issue.getIssueType() == IssueType.STORY) {
+                Story fromDb = (Story) byIssueId.get();
+                fromDb.setStoryStatus(((Story) issue).getStoryStatus());
+                return issueBaseRepository.save(fromDb);
+            }
+            if (issue.getIssueType() == IssueType.BUG) {
+                Bug fromDb = (Bug) byIssueId.get();
+                fromDb.setBugStatus(((Bug) issue).getBugStatus());
+                fromDb.setBugPriority(((Bug) issue).getBugPriority());
+                return issueBaseRepository.save(fromDb);
+            }
+        }
+        throw new IssueProcessingException("for update, issue must contain id and TYPE");
+    }
+
+    @Override
+    public void delete(UUID id) {
+        Optional<Issue> issueFromDb = issueBaseRepository.findByIssueId(id.toString());
+        issueBaseRepository.delete(issueFromDb
+                .orElseThrow(() -> new DeveloperException("unable to delete issue - not found in db")));
     }
 }

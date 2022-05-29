@@ -15,4 +15,8 @@ public interface IssueService {
     Optional<Issue> getIssueByUid(UUID uuid);
 
     Issue save(Issue issue);
+
+    Issue update(Issue issue);
+
+    void delete(UUID id);
 }

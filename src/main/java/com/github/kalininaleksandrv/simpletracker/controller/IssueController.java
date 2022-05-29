@@ -1,6 +1,5 @@
 package com.github.kalininaleksandrv.simpletracker.controller;
 
-import com.github.kalininaleksandrv.simpletracker.exception.IssueProcessingException;
 import com.github.kalininaleksandrv.simpletracker.model.Issue;
 import com.github.kalininaleksandrv.simpletracker.service.IssueServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +8,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Optional;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @RestController
@@ -19,18 +20,37 @@ public class IssueController {
 
     private final IssueServiceImpl issueService;
 
-    @GetMapping(path = "issues")
-    public ResponseEntity<Page<Issue>> getAllIssues(@PathVariable() int page,
-                                                    @RequestParam(required = false, defaultValue = "100") int size) {
-        if (page < 0) throw new IllegalArgumentException("page must be >= 0");
-        log.debug("starting request in /api/v1/issues");
-        Page<Issue> user = issueService.getAllIssues(page, size);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+    @GetMapping(path = "issues/{id}")
+    public ResponseEntity<Issue> getIssueById(@PathVariable UUID id) {
+
+        Optional<Issue> issue = issueService.getIssueByUid(id);
+        return issue.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.NO_CONTENT));
     }
 
     @PostMapping(path = "issue")
     public ResponseEntity<Issue> newIssue(@RequestBody Issue issue) {
         var savedIssue = issueService.save(issue);
         return new ResponseEntity<>(savedIssue, HttpStatus.OK);
+    }
+
+    @PutMapping(path = "issue")
+    public ResponseEntity<Issue> update(@RequestBody Issue issue) {
+        var issueFromDb = issueService.update(issue);
+        return new ResponseEntity<>(issueFromDb, HttpStatus.OK);
+    }
+
+    @DeleteMapping(path = "issue/{id}")
+    public ResponseEntity<String> delete(@PathVariable UUID id) {
+        issueService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping(path = "issues")
+    public ResponseEntity<Page<Issue>> findAll(@RequestParam int page,
+                                               @RequestParam(required = false, defaultValue = "100") int size) {
+        if (page < 0) throw new IllegalArgumentException("page must be >= 0");
+        Page<Issue> user = issueService.getAllIssues(page, size);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 }

@@ -35,11 +35,11 @@ public class Issue {
     @Column(name = "date")
     LocalDateTime dateTime;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "developer_id", referencedColumnName = "id")
     Developer developer;
 
-    @Transient
+    @Enumerated(EnumType.STRING)
     IssueType issueType;
 
 }
