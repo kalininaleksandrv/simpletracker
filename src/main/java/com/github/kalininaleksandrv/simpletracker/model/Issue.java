@@ -42,4 +42,7 @@ public class Issue {
     @Enumerated(EnumType.STRING)
     IssueType issueType;
 
+    public void setStatusToNew() {
+    }
+
 }

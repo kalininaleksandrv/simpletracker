@@ -39,4 +39,9 @@ public class Story extends Issue{
         result = 31 * result + (storyStatus != null ? storyStatus.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public void setStatusToNew() {
+        this.setStoryStatus(StoryStatus.NEW);
+    }
 }

@@ -2,10 +2,7 @@ package com.github.kalininaleksandrv.simpletracker.service;
 
 import com.github.kalininaleksandrv.simpletracker.exception.DeveloperException;
 import com.github.kalininaleksandrv.simpletracker.exception.IssueProcessingException;
-import com.github.kalininaleksandrv.simpletracker.model.Bug;
-import com.github.kalininaleksandrv.simpletracker.model.Issue;
-import com.github.kalininaleksandrv.simpletracker.model.IssueType;
-import com.github.kalininaleksandrv.simpletracker.model.Story;
+import com.github.kalininaleksandrv.simpletracker.model.*;
 import com.github.kalininaleksandrv.simpletracker.repository.IssueBaseRepository;
 import com.github.kalininaleksandrv.simpletracker.utils.IssueValidator;
 import lombok.RequiredArgsConstructor;
@@ -39,8 +36,15 @@ public class IssueServiceImpl implements IssueService {
             throw new IssueProcessingException("new issues must not contains issueId");
         }
         IssueValidator.validate(issue);
+        if (issue instanceof Story) {
+            ((Story) issue).setStoryStatus(StoryStatus.NEW);
+        }
+        if (issue instanceof Bug) {
+            ((Bug) issue).setBugStatus(BugStatus.NEW);
+        }
         issue.setIssueId(UUID.randomUUID().toString());
         issue.setDateTime(LocalDateTime.now());
+        issue.setStatusToNew();
         return issueBaseRepository.save(issue);
     }
 

@@ -40,4 +40,9 @@ public class Bug extends Issue{
         result = 31 * result + (bugPriority != null ? bugPriority.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public void setStatusToNew() {
+        this.setBugStatus(BugStatus.NEW);
+    }
 }
