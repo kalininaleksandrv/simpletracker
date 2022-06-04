@@ -1,7 +1,9 @@
 package com.github.kalininaleksandrv.simpletracker.controller;
 
 import com.github.kalininaleksandrv.simpletracker.model.Issue;
-import com.github.kalininaleksandrv.simpletracker.service.IssueServiceImpl;
+import com.github.kalininaleksandrv.simpletracker.model.Plan;
+import com.github.kalininaleksandrv.simpletracker.service.IssuePlaningService;
+import com.github.kalininaleksandrv.simpletracker.service.IssueService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -18,7 +20,8 @@ import java.util.UUID;
 @Slf4j
 public class IssueController {
 
-    private final IssueServiceImpl issueService;
+    private final IssueService issueService;
+    private final IssuePlaningService issuePlaningService;
 
     @GetMapping(path = "issues/{id}")
     public ResponseEntity<Issue> getIssueById(@PathVariable UUID id) {
@@ -29,7 +32,7 @@ public class IssueController {
     }
 
     @PostMapping(path = "issue")
-    public ResponseEntity<Issue> newIssue(@RequestBody Issue issue) {
+    public ResponseEntity<Issue> save(@RequestBody Issue issue) {
         var savedIssue = issueService.save(issue);
         return new ResponseEntity<>(savedIssue, HttpStatus.OK);
     }
@@ -41,16 +44,22 @@ public class IssueController {
     }
 
     @DeleteMapping(path = "issue/{id}")
-    public ResponseEntity<String> delete(@PathVariable UUID id) {
+    public ResponseEntity<String> deleteById(@PathVariable UUID id) {
         issueService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping(path = "issues")
-    public ResponseEntity<Page<Issue>> findAll(@RequestParam int page,
-                                               @RequestParam(required = false, defaultValue = "100") int size) {
+    public ResponseEntity<Page<Issue>> findAll(@RequestParam int page, @RequestParam(required = false, defaultValue = "100") int size) {
         if (page < 0) throw new IllegalArgumentException("page must be >= 0");
         Page<Issue> user = issueService.getAllIssues(page, size);
         return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/plan")
+    public ResponseEntity<Plan> plan() {
+
+        Plan plan = issuePlaningService.calculatePlan();
+        return new ResponseEntity<>(plan, HttpStatus.OK);
     }
 }

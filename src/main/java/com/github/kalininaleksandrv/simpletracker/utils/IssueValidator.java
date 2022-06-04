@@ -17,12 +17,21 @@ public final class IssueValidator {
             if (story.getPoints() <= 0) {
                 throw new IssueProcessingException("story must be estimate before creation");
             }
+            if (story.getPoints()>10){
+                throw new IssueProcessingException("one story must not exceed 11 points, try to decompose this story");
+            }
         }
         if (issue instanceof Bug) {
             Bug bug = (Bug) issue;
             if (bug.getBugPriority() == null) {
-                throw new IssueProcessingException("bug must be prioritized before creation");
+                throw new IssueProcessingException("bug must be prioritized due creation");
             }
+        }
+    }
+
+    public static void validateForUpdate(Issue fromDb, Issue fromRequest) {
+        if (fromRequest.getIssueType() != fromDb.getIssueType()){
+            throw new IssueProcessingException("new issue type not match with updated issue type");
         }
     }
 }

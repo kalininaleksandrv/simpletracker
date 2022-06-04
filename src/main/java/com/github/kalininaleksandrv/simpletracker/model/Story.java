@@ -14,7 +14,7 @@ import javax.persistence.Enumerated;
 @Setter
 @ToString
 @RequiredArgsConstructor
-public class Story extends Issue{
+public class Story extends Issue {
 
     private int points;
     @Enumerated(EnumType.STRING)
@@ -44,4 +44,5 @@ public class Story extends Issue{
     public void setStatusToNew() {
         this.setStoryStatus(StoryStatus.NEW);
     }
+
 }

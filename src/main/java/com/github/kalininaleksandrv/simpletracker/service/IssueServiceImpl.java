@@ -36,12 +36,6 @@ public class IssueServiceImpl implements IssueService {
             throw new IssueProcessingException("new issues must not contains issueId");
         }
         IssueValidator.validate(issue);
-        if (issue instanceof Story) {
-            ((Story) issue).setStoryStatus(StoryStatus.NEW);
-        }
-        if (issue instanceof Bug) {
-            ((Bug) issue).setBugStatus(BugStatus.NEW);
-        }
         issue.setIssueId(UUID.randomUUID().toString());
         issue.setDateTime(LocalDateTime.now());
         issue.setStatusToNew();
@@ -53,26 +47,28 @@ public class IssueServiceImpl implements IssueService {
         if (issue.getIssueId() == null || issue.getIssueType() == null) {
             throw new IssueProcessingException("for update, issue must contain id and TYPE");
         }
-        Optional<Issue> byIssueId = issueBaseRepository.findByIssueId(issue.getIssueId());
+        Optional<Issue> issueFromDb = issueBaseRepository.findByIssueId(issue.getIssueId());
 
-        if (byIssueId.isPresent()) {
-            byIssueId.get().setTitle(issue.getTitle());
-            byIssueId.get().setDescription(issue.getDescription());
-            byIssueId.get().setDeveloper(issue.getDeveloper());
+        if (issueFromDb.isPresent()) {
+            IssueValidator.validateForUpdate(issueFromDb.get(), issue);
+
+            issueFromDb.get().setTitle(issue.getTitle());
+            issueFromDb.get().setDescription(issue.getDescription());
+            issueFromDb.get().setDeveloper(issue.getDeveloper());
 
             if (issue.getIssueType() == IssueType.STORY) {
-                Story fromDb = (Story) byIssueId.get();
+                Story fromDb = (Story) issueFromDb.get();
                 fromDb.setStoryStatus(((Story) issue).getStoryStatus());
                 return issueBaseRepository.save(fromDb);
             }
             if (issue.getIssueType() == IssueType.BUG) {
-                Bug fromDb = (Bug) byIssueId.get();
+                Bug fromDb = (Bug) issueFromDb.get();
                 fromDb.setBugStatus(((Bug) issue).getBugStatus());
                 fromDb.setBugPriority(((Bug) issue).getBugPriority());
                 return issueBaseRepository.save(fromDb);
             }
         }
-        throw new IssueProcessingException("for update, issue must contain id and TYPE");
+        throw new IssueProcessingException("unable to uprate issue");
     }
 
     @Override
