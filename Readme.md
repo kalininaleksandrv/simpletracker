@@ -10,8 +10,7 @@
 * in a current implementation there is a naive planing approach based on idea,
 that if we're plane shortest stories first, then we could fit maximum stories on 
 each developer and week (surely in a many kind of incoming configurations of issues
-this approach won't be effective), more effective approach may implement fore example 
-graph of stories fore recursively build max-to-10-points branches of issues
+this approach won't be effective), more effective approach is a solving this problem as a `knapsack problem`
 
 ### todo
 on MVP stage project needs to following priority improvements
