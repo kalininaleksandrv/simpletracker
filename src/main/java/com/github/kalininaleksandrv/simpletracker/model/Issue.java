@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Data
-public abstract class Issue {
+public abstract class Issue implements Planable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
