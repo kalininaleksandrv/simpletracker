@@ -1,6 +1,5 @@
 package com.github.kalininaleksandrv.simpletracker.service;
 
-import com.github.kalininaleksandrv.simpletracker.exception.DeveloperException;
 import com.github.kalininaleksandrv.simpletracker.exception.IssueProcessingException;
 import com.github.kalininaleksandrv.simpletracker.model.*;
 import com.github.kalininaleksandrv.simpletracker.repository.IssueBaseRepository;
@@ -32,8 +31,8 @@ public class IssueServiceImpl implements IssueService {
 
     @Override
     public Issue save(Issue issue) {
-        if (issue.getIssueId() != null) {
-            throw new IssueProcessingException("new issues must not contains issueId");
+        if (issue.getIssueId() != null || issue.getId()!=null) {
+            throw new IssueProcessingException("new issues must not contains issueId or Id");
         }
         IssueValidator.validate(issue);
         issue.setIssueId(UUID.randomUUID().toString());
@@ -44,7 +43,7 @@ public class IssueServiceImpl implements IssueService {
 
     @Override
     public Issue update(Issue issue) {
-        if (issue.getIssueId() == null || issue.getIssueType() == null) {
+        if (issue.getIssueType() == null) {
             throw new IssueProcessingException("for update, issue must contain id and TYPE");
         }
         Optional<Issue> issueFromDb = issueBaseRepository.findByIssueId(issue.getIssueId());
@@ -72,9 +71,12 @@ public class IssueServiceImpl implements IssueService {
     }
 
     @Override
-    public void delete(UUID id) {
+    public boolean delete(UUID id) {
         Optional<Issue> issueFromDb = issueBaseRepository.findByIssueId(id.toString());
-        issueBaseRepository.delete(issueFromDb
-                .orElseThrow(() -> new DeveloperException("unable to delete issue - not found in db")));
+        if(issueFromDb.isPresent()){
+            issueBaseRepository.delete(issueFromDb.get());
+            return true;
+        }
+        return false;
     }
 }

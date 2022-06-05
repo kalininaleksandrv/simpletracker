@@ -1,6 +1,7 @@
 package com.github.kalininaleksandrv.simpletracker.model;
 
 import com.github.kalininaleksandrv.simpletracker.exception.IssueProcessingException;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -12,10 +13,12 @@ import javax.persistence.Enumerated;
 @Setter
 @ToString
 @RequiredArgsConstructor
+@Schema(allOf = Issue.class)
 public class Story extends Issue {
-
+    @Schema(required = true, defaultValue = "5")
     private int points;
     @Enumerated(EnumType.STRING)
+    @Schema(hidden = true)
     private StoryStatus storyStatus;
 
     @Override

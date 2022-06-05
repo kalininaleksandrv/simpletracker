@@ -21,3 +21,6 @@ spring:
     baseline-on-migrate: true
     user: sa
     password:
+springdoc:
+  api-docs:
+    path: /api-docs

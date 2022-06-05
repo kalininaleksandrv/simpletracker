@@ -1,19 +1,15 @@
 package com.github.kalininaleksandrv.simpletracker.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 @EqualsAndHashCode
 @ToString
+@RequiredArgsConstructor
 public class Plan {
-
-
     private final Map<Integer, Set<Story>> planTable;
     @Getter
     @Setter

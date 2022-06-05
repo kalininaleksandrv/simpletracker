@@ -18,5 +18,5 @@ public interface IssueService {
 
     Issue update(Issue issue);
 
-    void delete(UUID id);
+    boolean delete(UUID id);
 }

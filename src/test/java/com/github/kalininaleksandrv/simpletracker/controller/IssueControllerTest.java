@@ -239,8 +239,4 @@ class IssueControllerTest {
                 .andExpect(jsonPath("$.message", Matchers.containsStringIgnoringCase("new issue type not match with updated issue type")));
 
     }
-
-    @Test
-    void plan() {
-    }
 }
