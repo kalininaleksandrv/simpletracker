@@ -2,6 +2,7 @@ package com.github.kalininaleksandrv.simpletracker.service;
 
 import com.github.kalininaleksandrv.simpletracker.exception.IssueProcessingException;
 import com.github.kalininaleksandrv.simpletracker.model.*;
+import com.github.kalininaleksandrv.simpletracker.repository.DeveloperRepository;
 import com.github.kalininaleksandrv.simpletracker.repository.IssueBaseRepository;
 import com.github.kalininaleksandrv.simpletracker.utils.IssueValidator;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ import java.util.UUID;
 public class IssueServiceImpl implements IssueService {
 
     private final IssueBaseRepository issueBaseRepository;
+    private final DeveloperRepository developerRepository;
 
     @Override
     public Page<Issue> getAllIssues(int page, int size) {
@@ -35,6 +37,10 @@ public class IssueServiceImpl implements IssueService {
             throw new IssueProcessingException("new issues must not contains issueId or Id");
         }
         IssueValidator.validate(issue);
+        if(issue.getDeveloper()!=null && issue.getDeveloper().getId()!=null){
+            Developer savedDev = developerRepository.save(issue.getDeveloper());
+            issue.setDeveloper(savedDev);
+        }
         issue.setIssueId(UUID.randomUUID().toString());
         issue.setDateTime(LocalDateTime.now());
         issue.setStatusToNew();
