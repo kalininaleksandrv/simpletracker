@@ -1,0 +1,333 @@
+{
+	"info": {
+		"_postman_id": "09bdfbd7-33f1-477f-aff9-bdce5d1eaaa5",
+		"name": "SimpleTracker",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "getDeveloperById",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/developers/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"developers",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add new developer",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"name\" : \"dev2\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/developer",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"developer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteDeveloperById",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/developers/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"developers",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getDevelopersAll",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/developers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"developers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateDeveloperById",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"id\": 4,\n\"name\": \"Darth Veider\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/developer",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"developer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAllIssues",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/issues?page=0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"issues"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getIssueById",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/issues/09eaff2c-eed4-40b9-8642-0dc561bc4ed",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"issues",
+						"09eaff2c-eed4-40b9-8642-0dc561bc4ed"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add new story",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"title\" : \"story1\",\n\"issueType\" : \"STORY\", \n\"description\": \"add feature1\", \n\"dateTime\" : null, \n\"developer\" : null,\n\"points\": 9\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/issue",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"issue"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update story",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"title\" : \"story123\",\n\"issueType\" : \"STORY\", \n\"description\": \"add feature1\", \n\"dateTime\" : null, \n\"developer\" : null,\n\"points\": 9,\n\"storyStatus\": \"ESTIMATED\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/issue/a639609e-96ad-45d6-81e1-730566c91098",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"issue",
+						"a639609e-96ad-45d6-81e1-730566c91098"
+					],
+					"query": [
+						{
+							"key": "issueId",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add new bug",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"title\" : \"bug4\",\n\"issueType\" : \"BUG\", \n\"description\": \"bug_to_fix_3\", \n\"dateTime\" : null, \n\"developer\" : {\n        \"id\": 2\n    },\n\"points\": \"\",\n\"bugPriority\" : \"MAJOR\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/issue",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"issue"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update bug",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"title\" : \"bug4\",\n\"issueType\" : \"BUG\", \n\"description\": \"bug_to_fix_3\", \n\"dateTime\" : null, \n\"developer\" : {\n        \"id\": 3\n    },\n\"points\": \"\",\n\"bugStatus\": \"RESOLVED\",\n\"bugPriority\" : \"CRITICAL\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/issue/8e99c41b-4451-477c-8665-282c2c7e3437",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"issue",
+						"8e99c41b-4451-477c-8665-282c2c7e3437"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "plan",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/plan",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"plan"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
