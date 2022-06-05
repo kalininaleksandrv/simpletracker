@@ -60,10 +60,9 @@ curl --location --request POST 'http://localhost:8080/api/v1/developer' \
 ```
 * update developer by id
 ```
-curl --location --request PUT 'http://localhost:8080/api/v1/developer' \
+curl --location --request PUT 'http://localhost:8080/api/v1/developer/1' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-"id": 1,
 "name": "John Johanson"
 }'
 ```

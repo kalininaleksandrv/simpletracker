@@ -33,8 +33,10 @@ public class DeveloperController {
         return new ResponseEntity<>(savedDeveloper, HttpStatus.OK);
     }
 
-    @PutMapping(path = "developer")
-    public ResponseEntity<Developer> update (@RequestBody Developer developer){
+    @PutMapping(path = "developer/{id}")
+    public ResponseEntity<Developer> update (@PathVariable Long id,
+                                             @RequestBody Developer developer){
+        developer.setId(id);
         var developerFromDb = developerService.update(developer);
         return developerFromDb.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.NO_CONTENT));

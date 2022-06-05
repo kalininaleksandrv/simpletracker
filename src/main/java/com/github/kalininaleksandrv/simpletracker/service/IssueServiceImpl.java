@@ -58,6 +58,7 @@ public class IssueServiceImpl implements IssueService {
             if (issue.getIssueType() == IssueType.STORY) {
                 Story fromDb = (Story) issueFromDb.get();
                 fromDb.setStoryStatus(((Story) issue).getStoryStatus());
+                fromDb.setPoints(((Story) issue).getPoints());
                 return issueBaseRepository.save(fromDb);
             }
             if (issue.getIssueType() == IssueType.BUG) {

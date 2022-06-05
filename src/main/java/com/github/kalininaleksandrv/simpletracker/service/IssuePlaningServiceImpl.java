@@ -81,6 +81,7 @@ public class IssuePlaningServiceImpl implements IssuePlaningService {
                 .findAllByIssueType(IssueType.STORY)
                 .stream()
                 .map(i -> (Story) i)
+                .filter(i -> i.getStoryStatus()!=null)
                 .filter(i -> i.getStoryStatus().equals(status))
                 .collect(Collectors.toSet());
     }

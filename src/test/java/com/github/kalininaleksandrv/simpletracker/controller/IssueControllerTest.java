@@ -190,10 +190,9 @@ class IssueControllerTest {
 
         String byId = issueBaseRepository.findById(1L).get().getIssueId();
 
-        ResultActions resultActions = mockMvc.perform(put("/api/v1/issue")
+        ResultActions resultActions = mockMvc.perform(put("/api/v1/issue/"+byId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\n" +
-                        "\"issueId\" : \n\"" + byId + "\"," +
                         "\"title\" : \"updated\", \n" +
                         "\"issueType\": \"STORY\", \n" +
                         "\"description\" : \"add feature1\", \n" +
@@ -223,10 +222,9 @@ class IssueControllerTest {
 
         String byId = issueBaseRepository.findById(1L).get().getIssueId();
 
-        ResultActions resultActions = mockMvc.perform(put("/api/v1/issue")
+        ResultActions resultActions = mockMvc.perform(put("/api/v1/issue/"+byId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\n" +
-                        "\"issueId\" : \n\"" + byId + "\"," +
                         "\"title\" : \"updated\", \n" +
                         "\"issueType\": \"BUG\", \n" +
                         "\"description\" : \"add feature1\", \n" +
