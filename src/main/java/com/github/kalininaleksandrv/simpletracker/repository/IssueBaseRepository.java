@@ -11,7 +11,6 @@ import java.util.Optional;
 import java.util.Set;
 
 public interface IssueBaseRepository extends PagingAndSortingRepository<Issue, Long> {
-
     Optional<Issue> findByIssueId(String issueId);
 
     @EntityGraph(

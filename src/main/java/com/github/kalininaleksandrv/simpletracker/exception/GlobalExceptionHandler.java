@@ -14,9 +14,7 @@ import java.util.AbstractMap;
 @ControllerAdvice
 @Component
 public class GlobalExceptionHandler {
-
     private static final Logger LOG = LoggerFactory.getLogger(GlobalExceptionHandler.class);
-
     @ExceptionHandler
     public ResponseEntity<AbstractMap.SimpleEntry<String, String>> handle(Exception exception) {
         LOG.error("Request could not be processed: ", exception);
