@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.sun.istack.NotNull;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -40,6 +41,7 @@ public abstract class Issue implements Planable {
     LocalDateTime dateTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @Cascade(org.hibernate.annotations.CascadeType.PERSIST)
     @JoinColumn(name = "developer_id", referencedColumnName = "id")
     @Schema(hidden = true)
     Developer developer;
