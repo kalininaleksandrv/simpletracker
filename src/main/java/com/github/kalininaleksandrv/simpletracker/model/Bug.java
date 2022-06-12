@@ -2,7 +2,10 @@ package com.github.kalininaleksandrv.simpletracker.model;
 
 import com.github.kalininaleksandrv.simpletracker.exception.IssueProcessingException;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -27,7 +30,7 @@ public class Bug extends Issue{
     }
 
     @Override
-    public Integer plane(Developer devToAllocate, Integer hours) {
+    public void plane(Developer devToAllocate) {
         throw new IssueProcessingException("bug is not allowed to add to plan");
     }
 

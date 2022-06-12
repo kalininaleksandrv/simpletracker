@@ -2,7 +2,10 @@ package com.github.kalininaleksandrv.simpletracker.model;
 
 import com.github.kalininaleksandrv.simpletracker.exception.IssueProcessingException;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -27,13 +30,9 @@ public class Story extends Issue {
     }
 
     @Override
-    public Integer plane(Developer devToAllocate, Integer hours) {
-        if (hours >= points) {
-            super.setDeveloper(devToAllocate);
-            storyStatus = StoryStatus.ESTIMATED;
-            return hours - points;
-        }
-        return -1;
+    public void plane(Developer devToAllocate) {
+        super.setDeveloper(devToAllocate);
+        storyStatus = StoryStatus.ESTIMATED;
     }
 
     @Override
