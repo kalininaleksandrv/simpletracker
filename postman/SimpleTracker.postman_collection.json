@@ -254,7 +254,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\"title\" : \"bug4\",\n\"issueType\" : \"BUG\", \n\"description\": \"bug_to_fix_3\", \n\"dateTime\" : null, \n\"developer\" : {\n        \"id\": 2\n    },\n\"points\": \"\",\n\"bugPriority\" : \"MAJOR\"\n}",
+					"raw": "{\n\"title\" : \"bug4\",\n\"issueType\" : \"BUG\", \n\"description\": \"bug_to_fix_3\", \n\"dateTime\" : null, \n\"developer\" : {\n    \"name\": \"ZZZZ\"\n},\n\"points\": \"\",\n\"bugPriority\" : \"MAJOR\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"

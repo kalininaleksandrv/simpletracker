@@ -100,3 +100,6 @@ curl --location --request POST 'http://localhost:8080/api/v1/issue' \
 ```
 curl --location --request GET 'http://localhost:8080/api/v1/plan'
 ```
+
+* to re-plan just add a new story or update current story WITH setting 
+a "storyStatus": "NEW", then just execute new `/plan` request
