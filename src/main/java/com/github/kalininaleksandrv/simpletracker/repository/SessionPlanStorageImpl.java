@@ -1,6 +1,7 @@
 package com.github.kalininaleksandrv.simpletracker.repository;
 
 import com.github.kalininaleksandrv.simpletracker.model.Plan;
+import com.github.kalininaleksandrv.simpletracker.model.Story;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -9,11 +10,12 @@ import org.springframework.stereotype.Component;
 public class SessionPlanStorageImpl implements SessionPlanStorage {
 
     private Plan plan;
+    private final IssueBaseRepository issueBaseRepository;
 
     @Override
-    public Plan savePlan(Plan plan) {
+    public void savePlan(Plan plan) {
+        issueBaseRepository.saveAll(plan.getAllStoriesFromPlan());
         this.plan = plan;
-        return plan;
     }
 
     @Override
@@ -26,6 +28,10 @@ public class SessionPlanStorageImpl implements SessionPlanStorage {
 
     @Override
     public Plan invalidatePlan() {
+        for (Story s : plan.getAllStoriesFromPlan()) {
+            s.unplane();
+        }
+        issueBaseRepository.saveAll(plan.getAllStoriesFromPlan());
         plan = new Plan();
         return plan;
     }

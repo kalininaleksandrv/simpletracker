@@ -7,10 +7,11 @@
 * lombok for less boilerplate and more readable code
 * openapi `http://localhost:8080/api-docs/` and swagger for auto-describe endpoints 
 * Junit5 for testing (only IssueController covered by tests as it's an example project)
-* in a current implementation there is a naive planing approach based on idea,
-that if we're plane shortest stories first, then we could fit maximum stories on 
-each developer and week (surely in a many kind of incoming configurations of issues
-this approach won't be effective), more effective approach is a solving this problem as a `knapsack problem`
+* in a current implementation there is a long-to-short planing approach based on idea,
+that we can try to spend all free hours of each developer on a given week and then re-invoke
+method with remaining issues recursively, since stories previously sorted descending order,
+this guaranty more effective utilization of hours, more effective approach is a solving 
+this problem as a `knapsack problem`
 
 ### todo
 on MVP stage project needs to following priority improvements

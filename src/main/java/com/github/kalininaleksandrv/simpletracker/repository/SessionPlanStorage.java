@@ -4,7 +4,7 @@ import com.github.kalininaleksandrv.simpletracker.model.Plan;
 
 public interface SessionPlanStorage {
 
-    Plan savePlan(Plan plan);
+    void savePlan(Plan plan);
 
     Plan getOrCreatePlan();
 

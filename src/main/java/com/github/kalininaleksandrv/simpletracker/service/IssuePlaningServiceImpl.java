@@ -8,7 +8,10 @@ import com.github.kalininaleksandrv.simpletracker.repository.SessionPlanStorage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -16,29 +19,23 @@ import java.util.stream.Collectors;
 public class IssuePlaningServiceImpl implements IssuePlaningService {
 
     private final IssueBaseRepository issueBaseRepository;
+    private final DeveloperRepository developerRepository;
     private final SessionPlanStorage sessionPlanStorage;
-
     private final WeeklyPlanCalculator weeklyPlanCalculator;
 
     @Override
     public Plan calculatePlan() {
+        Map<Developer, Integer> hoursMap = initHourTable();
         Set<Story> unplannedStories = getAndFilterByStatus(StoryStatus.NEW);
         Plan plan = sessionPlanStorage.getOrCreatePlan();
-        Set<Story> allStoriesFromPlan = plan.getAllStoriesFromPlan();
-        if (allStoriesFromPlan.size() != 0 && unplannedStories.size() != 0) {
-            /*
-              since we have additional storage we must perform total re-planing
-              consider that not only set of stories but number of developers may change
-             */
-            for (Story s : allStoriesFromPlan) {
-                s.unplane();
-            }
-            issueBaseRepository.saveAll(allStoriesFromPlan);
-            unplannedStories.addAll(allStoriesFromPlan);
+        //if true - full re-planing must be performed
+        if (plan.getNumberOfPlanedStories() != 0 && unplannedStories.size() != 0) {
+            unplannedStories.addAll(plan.getAllStoriesFromPlan());
             plan = sessionPlanStorage.invalidatePlan();
         }
-        Plan calculated = weeklyPlanCalculator.calculateWeeklyPlan(plan, 1, unplannedStories);
-        return sessionPlanStorage.savePlan(calculated);
+        Plan calculatedPlan = weeklyPlanCalculator.calculateWeeklyPlan(plan, 1, unplannedStories, hoursMap);
+        sessionPlanStorage.savePlan(calculatedPlan);
+        return calculatedPlan;
     }
 
     private Set<Story> getAndFilterByStatus(StoryStatus status) {
@@ -46,8 +43,20 @@ public class IssuePlaningServiceImpl implements IssuePlaningService {
                 .findAllByIssueType(IssueType.STORY)
                 .stream()
                 .map(i -> (Story) i)
-                .filter(i -> i.getStoryStatus()!=null)
+                .filter(i -> i.getStoryStatus() != null)
                 .filter(i -> i.getStoryStatus().equals(status))
                 .collect(Collectors.toSet());
+    }
+
+    private Map<Developer, Integer> initHourTable() {
+        List<Developer> developers = developerRepository.findAll();
+        if (developers.size() < 1) {
+            throw new IssueProcessingException("no developers, unable to allocate issues");
+        }
+        Map<Developer, Integer> hoursTable = new HashMap<>();
+        for (Developer d : developers) {
+            hoursTable.put(d, 0);
+        }
+        return hoursTable;
     }
 }

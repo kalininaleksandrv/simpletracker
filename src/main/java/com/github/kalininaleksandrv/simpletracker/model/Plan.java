@@ -10,15 +10,35 @@ import java.util.stream.Collectors;
 @ToString
 @RequiredArgsConstructor
 public class Plan {
-    private final Map<Integer, Set<Story>> planTable;
     @Getter
     @Setter
     private int numOfWeek;
+    private final Map<Integer, Set<Story>> planTable;
     private Map<String, Integer> allocatedHours;
 
     public Plan() {
         this.planTable = new HashMap<>();
         this.numOfWeek = 1;
+    }
+
+    public void addStoryToPlan(Integer currNumberOfWeek, Story story) {
+        numOfWeek = currNumberOfWeek;
+        Set<Story> planToCurrentWeek = planTable.computeIfAbsent(currNumberOfWeek, i -> new HashSet<>());
+        planToCurrentWeek.add(story);
+        planTable.put(currNumberOfWeek, planToCurrentWeek);
+    }
+
+    @JsonIgnore
+    public Set<Story> getAllStoriesFromPlan() {
+        return planTable.values()
+                .stream()
+                .flatMap(Collection::stream)
+                .collect(Collectors.toSet());
+    }
+
+    @JsonIgnore
+    public int getNumberOfPlanedStories() {
+        return planTable.size();
     }
 
     public Map<String, Set<Story>> getPlanTable() {
@@ -37,20 +57,5 @@ public class Plan {
                         .map(Story::getPoints)
                         .reduce(Integer::sum)
                         .orElse(0)));
-    }
-
-    public void addStoryToPlan(Integer currNumberOfWeek, Story story) {
-        numOfWeek = currNumberOfWeek;
-        Set<Story> planToCurrentWeek = planTable.computeIfAbsent(currNumberOfWeek, i -> new HashSet<>());
-        planToCurrentWeek.add(story);
-        planTable.put(currNumberOfWeek, planToCurrentWeek);
-    }
-
-    @JsonIgnore
-    public Set<Story> getAllStoriesFromPlan() {
-        return planTable.values()
-                .stream()
-                .flatMap(Collection::stream)
-                .collect(Collectors.toSet());
     }
 }
