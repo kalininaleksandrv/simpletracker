@@ -15,18 +15,19 @@ import java.util.AbstractMap;
 @Component
 public class GlobalExceptionHandler {
     private static final Logger LOG = LoggerFactory.getLogger(GlobalExceptionHandler.class);
-    @ExceptionHandler
-    public ResponseEntity<AbstractMap.SimpleEntry<String, String>> handle(Exception exception) {
+    @ExceptionHandler(value = {IssueProcessingException.class,
+            DeveloperException.class,
+            HttpMessageNotReadableException.class})
+    public ResponseEntity<AbstractMap.SimpleEntry<String, String>> handleSpecific(Exception exception) {
         LOG.error("Request could not be processed: ", exception);
-        AbstractMap.SimpleEntry<String, String> response;
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                new AbstractMap.SimpleEntry<>("message", exception.getMessage()));
+    }
 
-        if (exception instanceof IssueProcessingException ||
-                exception instanceof DeveloperException ||
-                exception instanceof HttpMessageNotReadableException) {
-            response = new AbstractMap.SimpleEntry<>("message", exception.getMessage());
-        } else {
-            response = new AbstractMap.SimpleEntry<>("message", "Request could not be processed");
-        }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    @ExceptionHandler()
+    public ResponseEntity<AbstractMap.SimpleEntry<String, String>> handleCommon(Exception exception) {
+        LOG.error("Request could not be processed: ", exception);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                new AbstractMap.SimpleEntry<>("message", "Request could not be processed"));
     }
 }
